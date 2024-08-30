@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex justify-between items-center bg-slate-950 p-1">
+  <nav class="flex justify-between items-center bg-[#0e152e] p-1">
     <div class="flex items-center space-x-4 ml-40">
       <button
         class="flex items-center bg-transparent text-white font-bold text-xl"
