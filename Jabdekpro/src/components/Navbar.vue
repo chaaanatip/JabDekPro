@@ -1,5 +1,7 @@
 <template>
-  <nav class="flex justify-between items-center bg-[#0e152e] p-1">
+  <nav
+    class="sticky top-0 z-50 flex justify-between items-center bg-[#0b1125] p-1 shadow-lg"
+  >
     <div class="flex items-center space-x-4 ml-40">
       <button
         class="flex items-center bg-transparent text-white font-bold text-xl"
@@ -30,7 +32,7 @@
     </div>
 
     <!-- ปุ่ม Products ขวาสุด -->
-    <div class="ml-auto">
+    <div class="ml-auto mr-20">
       <button
         class="bg-transparent py-2 px-4 border border-blue-900 rounded-xl hover:bg-blue-900 font-bold text-blue-900 hover:text-white"
       >
@@ -39,5 +41,11 @@
     </div>
   </nav>
 </template>
+
+<style scoped>
+nav {
+  backdrop-filter: blur(5px);
+}
+</style>
 
 <style scoped></style>
