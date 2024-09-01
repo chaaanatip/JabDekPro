@@ -3,17 +3,9 @@ import { ref } from "vue"
 import IconSearch from "@/components/icons/IconSearch.vue"
 import valorant from "@/assets/logo/valorant.jpg"
 
-import Modal from "@/components/modals/Modal.vue"
+import Modal from "@/components/modals/ModalProduct.vue"
 
-import {
-  TransitionRoot,
-  TransitionChild,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/vue"
-
-const isOpen = ref(true)
+const isOpen = ref(false)
 
 function closeModal() {
   isOpen.value = false

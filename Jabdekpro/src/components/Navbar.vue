@@ -32,11 +32,16 @@
     </div>
 
     <!-- ปุ่ม Products ขวาสุด -->
-    <div class="ml-auto mr-20">
+    <div class="ml-auto mr-20 space-x-3">
       <button
         class="bg-transparent py-2 px-4 border border-blue-900 rounded-xl hover:bg-blue-900 font-bold text-blue-900 hover:text-white"
       >
         Products
+      </button>
+      <button
+        class="bg-transparent py-2 px-4 border border-blue-900 rounded-xl hover:bg-blue-900 font-bold text-blue-900 hover:text-white"
+      >
+        <router-link to="/login">Login</router-link>
       </button>
     </div>
   </nav>
