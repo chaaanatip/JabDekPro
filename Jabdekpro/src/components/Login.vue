@@ -1,4 +1,36 @@
-<script setup></script>
+<!-- src/components/Login.vue -->
+
+<script setup>
+import { ref } from "vue"
+import axios from "axios"
+import { useRouter } from "vue-router"
+
+// สร้างตัวแปรสำหรับฟอร์ม
+const email = ref("")
+const password = ref("")
+const message = ref("")
+const router = useRouter()
+
+// ฟังก์ชันสำหรับการเข้าสู่ระบบ
+const handleLogin = async () => {
+  try {
+    const response = await axios.post("http://localhost:3000/api/users/login", {
+      email: email.value,
+      password: password.value,
+    })
+    message.value = response.data.message
+
+    // บันทึก token ลงใน localStorage
+    localStorage.setItem("token", response.data.token)
+
+    // เปลี่ยนเส้นทางไปยังหน้าอื่นหลังจากเข้าสู่ระบบสำเร็จ
+    router.push("/dashboard") // เปลี่ยนเส้นทางไปยังหน้าที่ต้องการ
+  } catch (error) {
+    message.value = "Login failed"
+  }
+}
+</script>
+
 <template>
   <section class="bg-gray-50 dark:bg-gray-900">
     <div
@@ -13,7 +45,7 @@
           >
             Sign in to your account
           </h1>
-          <form class="space-y-4 md:space-y-6" action="#">
+          <form class="space-y-4 md:space-y-6" @submit.prevent="handleLogin">
             <div>
               <label
                 for="email"
@@ -21,12 +53,12 @@
                 >Your email</label
               >
               <input
+                v-model="email"
                 type="email"
-                name="email"
                 id="email"
                 class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="name@company.com"
-                required=""
+                required
               />
             </div>
             <div>
@@ -36,12 +68,12 @@
                 >Password</label
               >
               <input
+                v-model="password"
                 type="password"
-                name="password"
                 id="password"
                 placeholder="••••••••"
                 class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
+                required
               />
             </div>
             <div class="flex items-center justify-between">
@@ -52,7 +84,6 @@
                     aria-describedby="remember"
                     type="checkbox"
                     class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                    required=""
                   />
                 </div>
                 <div class="ml-3 text-sm">
@@ -81,10 +112,14 @@
                 >Sign up</a
               >
             </p>
+            <p v-if="message" class="text-red-500">{{ message }}</p>
           </form>
         </div>
       </div>
     </div>
   </section>
 </template>
-<style></style>
+
+<style scoped>
+/* เพิ่มสไตล์ที่จำเป็นที่นี่ */
+</style>
