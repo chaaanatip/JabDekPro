@@ -67,5 +67,6 @@ router.get('/countuser', async (req, res) => {
     res.status(500).json({ message: 'Server error' })
   }
 })
+// Create product route
 
 module.exports = router

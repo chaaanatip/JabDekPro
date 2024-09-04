@@ -1,11 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
-import valorant from '@/assets/logo/valorant.jpg'
+import defaultImage from '@/assets/logo/valorant.jpg' // รูปภาพที่จะแสดงถ้า image_url ว่าง
 
 import Modal from '@/components/modals/ModalProduct.vue'
 
 const isOpen = ref(false)
+const products = ref([]) // เก็บข้อมูลสินค้า
 
 function closeModal() {
   isOpen.value = false
@@ -18,18 +19,30 @@ const userCount = ref(0)
 
 const fetchUserCount = async () => {
   try {
-    // เรียก API URL แบบเต็มที่คุณระบุ
     const response = await fetch('http://localhost:3000/api/users/countuser')
     const data = await response.json()
-    userCount.value = data.count // อัปเดตค่า userCount จาก API response
+    userCount.value = data.count
   } catch (error) {
     console.error('Error fetching user count:', error)
   }
 }
 
-// เรียกฟังก์ชันเมื่อ component ถูก mount
+const fetchProducts = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/api/products')
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+    const data = await response.json()
+    products.value = data
+  } catch (error) {
+    console.error('Error fetching products:', error)
+  }
+}
+
 onMounted(() => {
   fetchUserCount()
+  fetchProducts()
 })
 </script>
 
@@ -92,56 +105,33 @@ onMounted(() => {
         <h1>Shop</h1>
       </div>
 
+      <!-- แสดงข้อมูลสินค้าด้วย v-for -->
       <div class="grid grid-cols-4 gap-4 pb-20">
         <button
+          v-for="product in products"
+          :key="product.id"
           @click="openModal"
           class="max-w-sm rounded overflow-hidden shadow-lg"
         >
           <img
-            class="w-full h-50"
-            src="@/assets/logo/valorant.jpg"
-            alt="Sunset in the mountains"
-            type="button"
+            class="w-full h-64 object-cover"
+            :src="product.image_url || defaultImage"
+            alt="Product image"
           />
-
           <div class="px-6 py-4">
-            <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
-            <p class="text-gray-700 text-base">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Voluptatibus quia, nulla! Maiores et perferendis eaque,
-              exercitationem praesentium nihil.
+            <div class="font-bold text-xl mb-2 text-white">
+              {{ product.name }}
+            </div>
+            <p class="text-gray-400 text-base">
+              {{ product.description }}
             </p>
+            <p class="text-green-400">Price: {{ product.price }}</p>
+            <p class="text-cyan-400">Stock: {{ product.stock }}</p>
           </div>
-        </button>
-
-        <button
-          class="bg-blue-500 h-44 flex items-center justify-center"
-        ></button>
-        <button class="bg-blue-500 h-44 flex items-center justify-center">
-          hello
-        </button>
-        <button class="bg-blue-500 h-44 flex items-center justify-center">
-          hello
-        </button>
-        <button class="bg-blue-500 h-44 flex items-center justify-center">
-          hello
-        </button>
-        <button class="bg-blue-500 h-44 flex items-center justify-center">
-          hello
         </button>
       </div>
     </div>
   </section>
-
-  <!-- <div class="fixed inset-0 flex items-center justify-center">
-    <button
-      type="button"
-      @click="openModal"
-      class="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
-    >
-      Open dialog
-    </button>
-  </div> -->
 </template>
 
 <style scoped>

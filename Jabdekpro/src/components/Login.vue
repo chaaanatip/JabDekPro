@@ -1,32 +1,32 @@
 <!-- src/components/Login.vue -->
 
 <script setup>
-import { ref } from "vue"
-import axios from "axios"
-import { useRouter } from "vue-router"
+import { ref } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 // สร้างตัวแปรสำหรับฟอร์ม
-const email = ref("")
-const password = ref("")
-const message = ref("")
+const email = ref('')
+const password = ref('')
+const message = ref('')
 const router = useRouter()
 
 // ฟังก์ชันสำหรับการเข้าสู่ระบบ
 const handleLogin = async () => {
   try {
-    const response = await axios.post("http://localhost:3000/api/users/login", {
+    const response = await axios.post('http://localhost:3000/api/users/login', {
       email: email.value,
-      password: password.value,
+      password: password.value
     })
     message.value = response.data.message
 
     // บันทึก token ลงใน localStorage
-    localStorage.setItem("token", response.data.token)
+    localStorage.setItem('token', response.data.token)
 
     // เปลี่ยนเส้นทางไปยังหน้าอื่นหลังจากเข้าสู่ระบบสำเร็จ
-    router.push("/dashboard") // เปลี่ยนเส้นทางไปยังหน้าที่ต้องการ
+    router.push('/dashboard') // เปลี่ยนเส้นทางไปยังหน้าที่ต้องการ
   } catch (error) {
-    message.value = "Login failed"
+    message.value = 'Login failed'
   }
 }
 </script>
@@ -100,7 +100,7 @@ const handleLogin = async () => {
             </div>
             <button
               type="submit"
-              class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              class="w-full text-black bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
             >
               Sign in
             </button>
