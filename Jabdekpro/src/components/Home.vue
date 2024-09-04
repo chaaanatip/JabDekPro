@@ -1,9 +1,9 @@
 <script setup>
-import { ref } from "vue"
-import IconSearch from "@/components/icons/IconSearch.vue"
-import valorant from "@/assets/logo/valorant.jpg"
+import { ref, onMounted } from 'vue'
+import IconSearch from '@/components/icons/IconSearch.vue'
+import valorant from '@/assets/logo/valorant.jpg'
 
-import Modal from "@/components/modals/ModalProduct.vue"
+import Modal from '@/components/modals/ModalProduct.vue'
 
 const isOpen = ref(false)
 
@@ -13,6 +13,24 @@ function closeModal() {
 function openModal() {
   isOpen.value = true
 }
+
+const userCount = ref(0)
+
+const fetchUserCount = async () => {
+  try {
+    // เรียก API URL แบบเต็มที่คุณระบุ
+    const response = await fetch('http://localhost:3000/api/users/countuser')
+    const data = await response.json()
+    userCount.value = data.count // อัปเดตค่า userCount จาก API response
+  } catch (error) {
+    console.error('Error fetching user count:', error)
+  }
+}
+
+// เรียกฟังก์ชันเมื่อ component ถูก mount
+onMounted(() => {
+  fetchUserCount()
+})
 </script>
 
 <template>
@@ -60,8 +78,8 @@ function openModal() {
           <div class="stat-title text-secondary text-xs">Users</div>
         </div>
         <div class="stat place-items-center">
-          <div class="stat-value text-base">1,200</div>
-          <div class="stat-title text-xs">Registers</div>
+          <div class="stat-value text-base text-white">{{ userCount }}</div>
+          <div class="stat-title text-xs text-white">Registers</div>
         </div>
       </div>
     </div>
